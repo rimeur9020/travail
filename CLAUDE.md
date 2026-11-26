@@ -28,6 +28,14 @@ L'utilisateur fournit des fiches / PDF, une date de test et un prompt disant quo
 5. Commit + push sur la branche de travail, puis aussi sur `main` (`git push origin HEAD:main`) :
    le site en ligne (GitHub Pages, https://rimeur9020.github.io/travail/) est servi depuis `main`.
 
+## Règle : fiches de révision
+
+- Cours / test « de contenu » (physique, histoire, géo, chimie, bio, maths, sciences,
+  français, etc.) : **toujours** créer une fiche de révision (`index.html` dans le dossier
+  de la révision), même si le prompt ne le demande pas.
+- Liste de vocabulaire (voc d'allemand, d'anglais, de japonais…) : **pas de fiche**, juste
+  le PDF / les fichiers fournis (sauf si on demande explicitement autre chose).
+
 ## Archivé
 
 Automatique : `index.html` compare `dateTest` à la date du jour ; une révision passe dans
