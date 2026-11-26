@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercices résistance équivalente · Révisions</title>
+  <link rel="stylesheet" href="../../../assets/style.css">
+  <style>
+    .score { position: sticky; top: 0; z-index: 5; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; font-weight: 600; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .bar { flex: 1; min-width: 120px; height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
+    .bar > div { height: 100%; background: var(--today); width: 0; transition: width .3s; }
+    .exo { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+    .exo h3 { margin: 0 0 6px; font-size: 1rem; }
+    .exo .enonce { margin: 0 0 10px; }
+    .part { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+    .part label { flex: 1 1 220px; }
+    .part input[type=text] { width: 110px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 1rem; }
+    .part .unit { min-width: 24px; color: var(--muted); }
+    button { padding: 6px 12px; border-radius: 8px; border: 0; background: var(--c); color: #fff; font-weight: 600; cursor: pointer; font-size: .95rem; }
+    .res { font-weight: 600; min-width: 1.5em; }
+    .ok { color: var(--today); }
+    .ko { color: #d33; }
+    .choix label { display: block; padding: 6px 10px; margin: 4px 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+    .choix input { margin-right: 8px; }
+    .niveau { margin-top: 32px; }
+    .astuce { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+    .reset { background: var(--trash); }
+  </style>
+</head>
+<body class="cat-raphael">
+  <div class="wrap">
+    <a class="back" href="index.html">← Retour à la fiche</a>
+    <div class="fiche">
+      <h1>✏️ Exercices : résistance équivalente & lignes HT</h1>
+      <p class="meta">Des petits exercices pour apprendre à utiliser les formules, du plus facile au plus dur.
+        Écris ta réponse (virgule ou point, comme tu veux), clique sur <b>Vérifier</b>. Bloqué ? Ouvre l'<b>indice</b>, puis la <b>correction</b>.</p>
+
+      <div class="astuce"><b>🔺 Astuce loi d'Ohm :</b> U = R·I se retourne de 3 façons :
+        &nbsp;<b>U = R × I</b> &nbsp;·&nbsp; <b>I = U ÷ R</b> &nbsp;·&nbsp; <b>R = U ÷ I</b>.
+        Unités : U en volts (V), I en ampères (A), R en ohms (Ω), P en watts (W).</div>
+
+      <div class="score"><span id="score">0 / 0 juste</span><div class="bar"><div id="bar"></div></div><button class="reset" onclick="toutEffacer()">Recommencer</button></div>
+
+      <div id="exos"></div>
+    </div>
+  </div>
+
+<script>
+// Chaque exercice : titre, énoncé, parties (réponse numérique avec unité) ou QCM, indice, correction.
+const NIVEAUX = [
+  { titre: "Niveau 1 · Loi d'Ohm (U = R·I)", exos: [
+    { t: "Trouver U", e: "Une résistance de 20 Ω est traversée par un courant de 0,5 A. Quelle est la tension à ses bornes ?",
+      p: [{ q: "U =", r: 10, u: "V" }], i: "On cherche U, donc U = R × I.", c: "U = 20 × 0,5 = <b>10 V</b>" },
+    { t: "Trouver I", e: "On branche une résistance de 4 Ω sur une pile de 12 V. Quel courant la traverse ?",
+      p: [{ q: "I =", r: 3, u: "A" }], i: "On cherche I, donc I = U ÷ R.", c: "I = 12 ÷ 4 = <b>3 A</b>" },
+    { t: "Trouver R", e: "Une résistance branchée sur 9 V est traversée par 0,3 A. Que vaut-elle ?",
+      p: [{ q: "R =", r: 30, u: "Ω" }], i: "On cherche R, donc R = U ÷ I.", c: "R = 9 ÷ 0,3 = <b>30 Ω</b>" },
+    { t: "Une lampe à la maison", e: "Une lampe branchée sur le secteur (230 V) consomme un courant de 0,5 A. Quelle est sa résistance ?",
+      p: [{ q: "R =", r: 460, u: "Ω" }], i: "R = U ÷ I", c: "R = 230 ÷ 0,5 = <b>460 Ω</b>" },
+  ]},
+  { titre: "Niveau 2 · Résistances en série", exos: [
+    { t: "Résistance équivalente", e: "Trois résistances de 10 Ω, 20 Ω et 30 Ω sont branchées en série. Calcule R<sub>éq</sub>.",
+      p: [{ q: "R<sub>éq</sub> =", r: 60, u: "Ω" }], i: "En série, on additionne simplement.", c: "R<sub>éq</sub> = 10 + 20 + 30 = <b>60 Ω</b>" },
+    { t: "Courant et tensions", e: "On branche ces trois résistances (10 Ω, 20 Ω, 30 Ω, en série) sur un générateur de 12 V.",
+      p: [{ q: "Courant I dans le circuit :", r: 0.2, u: "A" }, { q: "Tension U<sub>2</sub> aux bornes de la résistance de 20 Ω :", r: 4, u: "V" }],
+      i: "D'abord I = U ÷ R<sub>éq</sub> (avec R<sub>éq</sub> = 60 Ω). En série, le même I traverse toutes les résistances : U<sub>2</sub> = R<sub>2</sub> × I.",
+      c: "I = 12 ÷ 60 = <b>0,2 A</b>. U<sub>2</sub> = 20 × 0,2 = <b>4 V</b>. (Et U<sub>1</sub> = 2 V, U<sub>3</sub> = 6 V : 2 + 4 + 6 = 12 V ✔)" },
+    { t: "Kirchhoff des tensions", e: "Trois lampes sont en série sur une pile de 9 V. On mesure 2 V sur la première et 3,5 V sur la deuxième. Quelle tension sur la troisième ?",
+      p: [{ q: "U<sub>3</sub> =", r: 3.5, u: "V" }], i: "En série, les tensions s'additionnent pour donner la tension du générateur : U = U<sub>1</sub> + U<sub>2</sub> + U<sub>3</sub>.",
+      c: "U<sub>3</sub> = 9 − 2 − 3,5 = <b>3,5 V</b>" },
+    { t: "Trouver une résistance manquante", e: "Deux résistances en série ont une résistance équivalente de 150 Ω. L'une vaut 90 Ω. Que vaut l'autre ?",
+      p: [{ q: "R<sub>2</sub> =", r: 60, u: "Ω" }], i: "R<sub>éq</sub> = R<sub>1</sub> + R<sub>2</sub>, donc R<sub>2</sub> = R<sub>éq</sub> − R<sub>1</sub>.", c: "R<sub>2</sub> = 150 − 90 = <b>60 Ω</b>" },
+  ]},
+  { titre: "Niveau 3 · Résistances en parallèle", exos: [
+    { t: "Deux résistances en parallèle", e: "Calcule la résistance équivalente de 6 Ω et 3 Ω branchées en parallèle.",
+      p: [{ q: "R<sub>éq</sub> =", r: 2, u: "Ω" }],
+      i: "1/R<sub>éq</sub> = 1/6 + 1/3 … et n'oublie pas de retourner la fraction ! (Ou le raccourci : R<sub>1</sub>×R<sub>2</sub> ÷ (R<sub>1</sub>+R<sub>2</sub>).)",
+      c: "1/R<sub>éq</sub> = 1/6 + 2/6 = 3/6 = 1/2 ⟹ R<sub>éq</sub> = <b>2 Ω</b>. Raccourci : 6×3 ÷ (6+3) = 18 ÷ 9 = 2 Ω ✔" },
+    { t: "Avec le raccourci", e: "Calcule la résistance équivalente de 20 Ω et 30 Ω en parallèle.",
+      p: [{ q: "R<sub>éq</sub> =", r: 12, u: "Ω" }], i: "R<sub>éq</sub> = (20 × 30) ÷ (20 + 30)", c: "R<sub>éq</sub> = 600 ÷ 50 = <b>12 Ω</b> (plus petit que 20 Ω ✔)" },
+    { t: "Trois résistances identiques", e: "Trois résistances de 12 Ω chacune sont en parallèle. Calcule R<sub>éq</sub>.",
+      p: [{ q: "R<sub>éq</sub> =", r: 4, u: "Ω" }], i: "1/R<sub>éq</sub> = 1/12 + 1/12 + 1/12", c: "1/R<sub>éq</sub> = 3/12 = 1/4 ⟹ R<sub>éq</sub> = <b>4 Ω</b>. (n résistances identiques R en parallèle : R ÷ n)" },
+    { t: "Courants dans les branches", e: "Les résistances de 6 Ω et 3 Ω (en parallèle) sont branchées sur 12 V.",
+      p: [{ q: "Courant dans la résistance de 6 Ω :", r: 2, u: "A" }, { q: "Courant dans la résistance de 3 Ω :", r: 4, u: "A" }, { q: "Courant total du générateur :", r: 6, u: "A" }],
+      i: "En parallèle, chaque branche a toute la tension : 12 V. Donc I = 12 ÷ R pour chaque branche, puis on additionne.",
+      c: "I<sub>1</sub> = 12 ÷ 6 = <b>2 A</b> · I<sub>2</sub> = 12 ÷ 3 = <b>4 A</b> · I = 2 + 4 = <b>6 A</b>. Vérif : 12 ÷ R<sub>éq</sub> = 12 ÷ 2 = 6 A ✔" },
+    { t: "Kirchhoff des courants", e: "Un courant de 5 A arrive à un nœud et se partage en trois branches. On mesure 2 A dans la première et 1,5 A dans la deuxième. Combien dans la troisième ?",
+      p: [{ q: "I<sub>3</sub> =", r: 1.5, u: "A" }], i: "Tout ce qui entre dans un nœud ressort : I = I<sub>1</sub> + I<sub>2</sub> + I<sub>3</sub>.", c: "I<sub>3</sub> = 5 − 2 − 1,5 = <b>1,5 A</b>" },
+  ]},
+  { titre: "Niveau 4 · Circuits mixtes", exos: [
+    { t: "Par sections", e: "Une résistance R<sub>1</sub> = 4 Ω est en série avec un groupe de deux résistances en parallèle : R<sub>2</sub> = 6 Ω et R<sub>3</sub> = 12 Ω.",
+      p: [{ q: "Résistance du groupe parallèle R<sub>23</sub> :", r: 4, u: "Ω" }, { q: "R<sub>éq</sub> du circuit :", r: 8, u: "Ω" }],
+      i: "Étape 1 : le groupe parallèle (raccourci : 6×12 ÷ 18). Étape 2 : il est en série avec R<sub>1</sub>, on additionne.",
+      c: "R<sub>23</sub> = 72 ÷ 18 = <b>4 Ω</b> · R<sub>éq</sub> = 4 + 4 = <b>8 Ω</b>" },
+    { t: "On redescend", e: "Ce même circuit (R<sub>1</sub> = 4 Ω en série avec 6 Ω // 12 Ω) est branché sur 24 V.",
+      p: [{ q: "Courant total I :", r: 3, u: "A" }, { q: "Tension U<sub>1</sub> aux bornes de R<sub>1</sub> :", r: 12, u: "V" }, { q: "Tension aux bornes du groupe parallèle :", r: 12, u: "V" }, { q: "Courant dans R<sub>3</sub> = 12 Ω :", r: 1, u: "A" }],
+      i: "I = U ÷ R<sub>éq</sub>. Ce courant traverse R<sub>1</sub> : U<sub>1</sub> = R<sub>1</sub> × I. Il reste 24 − U<sub>1</sub> pour le groupe parallèle. Puis I<sub>3</sub> = U ÷ R<sub>3</sub>.",
+      c: "I = 24 ÷ 8 = <b>3 A</b> · U<sub>1</sub> = 4 × 3 = <b>12 V</b> · groupe parallèle : 24 − 12 = <b>12 V</b> (ou 4 Ω × 3 A) · I<sub>3</sub> = 12 ÷ 12 = <b>1 A</b> (et I<sub>2</sub> = 2 A : 2 + 1 = 3 A ✔)" },
+    { t: "Parallèle de deux séries", e: "Branche du haut : 10 Ω et 20 Ω en série. Branche du bas : 15 Ω seule. Les deux branches sont en parallèle sur 30 V.",
+      p: [{ q: "Résistance de la branche du haut :", r: 30, u: "Ω" }, { q: "R<sub>éq</sub> du circuit :", r: 10, u: "Ω" }, { q: "Courant total :", r: 3, u: "A" }],
+      i: "Branche du haut : série (on additionne). Puis les deux branches en parallèle : 30 Ω // 15 Ω.",
+      c: "Haut : 10 + 20 = <b>30 Ω</b> · R<sub>éq</sub> = 30×15 ÷ 45 = <b>10 Ω</b> · I = 30 ÷ 10 = <b>3 A</b> (1 A en haut, 2 A en bas)" },
+  ]},
+  { titre: "Niveau 5 · Puissance et lignes à haute tension", exos: [
+    { t: "P = U·I", e: "Une bouilloire de 2300 W est branchée sur 230 V. Quel courant la traverse ?",
+      p: [{ q: "I =", r: 10, u: "A" }], i: "P = U × I, donc I = P ÷ U.", c: "I = 2300 ÷ 230 = <b>10 A</b>" },
+    { t: "Pertes dans une ligne", e: "Une ligne a 2 câbles de résistance R<sub>L</sub> = 5 Ω chacun. Elle transporte un courant de 10 A. Quelles sont les pertes par effet Joule ?",
+      p: [{ q: "P<sub>th</sub> =", r: 1000, u: "W" }], i: "P<sub>th</sub> = 2 × R<sub>L</sub> × I² (attention, I au carré !)", c: "P<sub>th</sub> = 2 × 5 × 10² = 2 × 5 × 100 = <b>1000 W</b>" },
+    { t: "Haute tension vs basse tension", e: "Même ligne (R<sub>L</sub> = 5 Ω par câble). Le consommateur veut 10 kW (= 10 000 W). Compare un transport à 1000 V et à 10 000 V.",
+      p: [{ q: "Courant à 1000 V :", r: 10, u: "A" }, { q: "Courant à 10 000 V :", r: 1, u: "A" }, { q: "Pertes à 10 000 V :", r: 10, u: "W" }, { q: "Les pertes sont divisées par combien ?", r: 100, u: "×" }],
+      i: "I = P ÷ U, puis P<sub>th</sub> = 2 R<sub>L</sub> I². À 1000 V tu as déjà calculé les pertes juste avant (1000 W).",
+      c: "1000 V : I = 10 000 ÷ 1000 = <b>10 A</b> → 1000 W de pertes. 10 000 V : I = <b>1 A</b> → P<sub>th</sub> = 2 × 5 × 1² = <b>10 W</b>. Tension × 10 ⟹ courant ÷ 10 ⟹ pertes ÷ <b>100</b> (car I²)." },
+    { t: "Tension à la centrale et rendement", e: "Toujours R<sub>L</sub> = 5 Ω, I = 10 A et U = 1000 V au consommateur.",
+      p: [{ q: "Tension U' à la centrale :", r: 1100, u: "V" }, { q: "Rendement η :", r: 90.9, u: "%" }],
+      i: "U' = 2 R<sub>L</sub> I + U, puis η = U ÷ U' (multiplie par 100 pour avoir des %).",
+      c: "U' = 2 × 5 × 10 + 1000 = <b>1100 V</b> · η = 1000 ÷ 1100 = 0,909 = <b>90,9 %</b>" },
+  ]},
+  { titre: "Niveau 6 · Est-ce que j'ai compris ?", exos: [
+    { t: "Ajouter une lampe", e: "Dans un circuit, on ajoute une lampe <b>en parallèle</b> des autres. Le courant total du générateur…",
+      choix: ["augmente", "diminue", "ne change pas"], r: 0, c: "Il <b>augmente</b> : une branche de plus = un courant de plus qui s'ajoute (et R<sub>éq</sub> diminue)." },
+    { t: "Ordre de grandeur", e: "On met 5 Ω en parallèle avec 1000 Ω. R<sub>éq</sub> vaut…",
+      choix: ["plus que 1000 Ω", "environ 500 Ω", "un peu moins que 5 Ω"], r: 2, c: "En parallèle, R<sub>éq</sub> est toujours <b>plus petite que la plus petite</b> : ≈ 4,98 Ω." },
+    { t: "Une lampe grille", e: "Trois lampes sont <b>en série</b>. L'une d'elles grille (le circuit est coupé à cet endroit). Les deux autres…",
+      choix: ["s'éteignent", "brillent plus", "brillent pareil"], r: 0, c: "Elles <b>s'éteignent</b> : en série, il n'y a qu'un seul chemin, le courant ne passe plus. (En parallèle, les autres resteraient allumées.)" },
+    { t: "Doubler la tension", e: "Pour la même puissance transportée, on double la tension de la ligne. Les pertes par effet Joule sont…",
+      choix: ["divisées par 2", "divisées par 4", "multipliées par 2"], r: 1, c: "Tension × 2 ⟹ courant ÷ 2 ⟹ pertes ÷ 2² = <b>÷ 4</b>." },
+    { t: "Multiprise", e: "Sur une multiprise, les appareils sont branchés…",
+      choix: ["en série", "en parallèle"], r: 1, c: "<b>En parallèle</b> : chacun a 230 V. Les courants s'additionnent, donc trop d'appareils = câble qui chauffe." },
+  ]},
+];
+
+const CLE = "exos-physique-2026-11-30";
+let etat = {};
+try { etat = JSON.parse(localStorage.getItem(CLE) || "{}"); } catch (e) {}
+function sauver() { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {} }
+
+function lireNombre(s) {
+  s = String(s).trim().replace(/\s/g, "").replace(",", ".").replace(/[^0-9.\-eE]/g, "");
+  return s === "" ? NaN : Number(s);
+}
+function proche(x, r) { return Math.abs(x - r) <= Math.max(Math.abs(r) * 0.02, 1e-9); }
+
+let total = 0;
+const html = [];
+NIVEAUX.forEach((niv, ni) => {
+  html.push(`<h2 class="niveau">${niv.titre}</h2>`);
+  niv.exos.forEach((ex, ei) => {
+    const id = `${ni}-${ei}`;
+    let corps = "";
+    if (ex.choix) {
+      total++;
+      corps = `<div class="choix">${ex.choix.map((c, k) => `<label><input type="radio" name="q${id}" value="${k}"> ${c}</label>`).join("")}</div>
+        <div class="part"><button onclick="verifQcm('${id}', ${ex.r})">Vérifier</button><span class="res" id="r${id}"></span></div>`;
+    } else {
+      corps = ex.p.map((p, k) => { total++; return `<div class="part"><label for="i${id}-${k}">${p.q}</label>
+        <input type="text" inputmode="decimal" id="i${id}-${k}" onkeydown="if(event.key==='Enter')verif('${id}',${k},${p.r})">
+        <span class="unit">${p.u}</span><button onclick="verif('${id}',${k},${p.r})">Vérifier</button><span class="res" id="r${id}-${k}"></span></div>`; }).join("");
+    }
+    html.push(`<div class="exo"><h3>${ni + 1}.${ei + 1} · ${ex.t}</h3><p class="enonce">${ex.e}</p>${corps}
+      ${ex.i ? `<details><summary>💡 Indice</summary><p>${ex.i}</p></details>` : ""}
+      <details><summary>✅ Correction</summary><p>${ex.c}</p></details></div>`);
+  });
+});
+document.getElementById("exos").innerHTML = html.join("");
+
+function marquer(cle, juste) {
+  const el = document.getElementById("r" + cle);
+  el.textContent = juste ? "✔ Juste !" : "✘ Pas encore";
+  el.className = "res " + (juste ? "ok" : "ko");
+}
+function verif(id, k, r) {
+  const v = document.getElementById(`i${id}-${k}`).value;
+  const juste = proche(lireNombre(v), r);
+  etat[`${id}-${k}`] = { v, juste }; sauver(); marquer(`${id}-${k}`, juste); maj();
+}
+function verifQcm(id, r) {
+  const sel = document.querySelector(`input[name="q${id}"]:checked`);
+  if (!sel) return;
+  const juste = Number(sel.value) === r;
+  etat[id] = { v: sel.value, juste }; sauver(); marquer(id, juste); maj();
+}
+function maj() {
+  const n = Object.values(etat).filter(x => x.juste).length;
+  document.getElementById("score").textContent = `${n} / ${total} juste${n > 1 ? "s" : ""}`;
+  document.getElementById("bar").style.width = (100 * n / total) + "%";
+}
+function toutEffacer() {
+  etat = {}; sauver();
+  document.querySelectorAll("input[type=text]").forEach(i => i.value = "");
+  document.querySelectorAll("input[type=radio]").forEach(i => i.checked = false);
+  document.querySelectorAll(".res").forEach(r => { r.textContent = ""; r.className = "res"; });
+  document.querySelectorAll("details").forEach(d => d.open = false);
+  maj();
+}
+// Restaurer les réponses déjà faites
+Object.entries(etat).forEach(([cle, x]) => {
+  const inp = document.getElementById("i" + cle);
+  if (inp) inp.value = x.v;
+  else { const radio = document.querySelector(`input[name="q${cle}"][value="${x.v}"]`); if (radio) radio.checked = true; }
+  if (document.getElementById("r" + cle)) marquer(cle, x.juste);
+});
+maj();
+</script>
+</body>
+</html>

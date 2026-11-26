@@ -24,6 +24,7 @@ window.REVISIONS = [
     description: "Série, parallèle, circuits mixtes, lois de Kirchhoff, lignes HT, réseau électrique et tension triphasée (cours p. 23 à 28).",
     page: "revisions/raphael/2026-11-30-physique-resistance-equivalente/index.html",
     fichiers: [
+      { nom: "Exercices d'entraînement", chemin: "revisions/raphael/2026-11-30-physique-resistance-equivalente/exercices.html" },
       { nom: "Photos du cours", chemin: "revisions/raphael/2026-11-30-physique-resistance-equivalente/index.html#photos" }
     ]
   },

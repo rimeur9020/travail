@@ -33,6 +33,10 @@ L'utilisateur fournit des fiches / PDF, une date de test et un prompt disant quo
 - Cours / test « de contenu » (physique, histoire, géo, chimie, bio, maths, sciences,
   français, etc.) : **toujours** créer une fiche de révision (`index.html` dans le dossier
   de la révision), même si le prompt ne le demande pas.
+  + **toujours** une page `exercices.html` d'entraînement : exercices simples et progressifs
+  pour apprendre à utiliser les formules, réponses vérifiables, indice + correction
+  (modèle : `revisions/raphael/2026-11-30-physique-resistance-equivalente/exercices.html`).
+  Lier depuis la fiche et dans `fichiers` de l'entrée.
 - Liste de vocabulaire (voc d'allemand, d'anglais, de japonais…) : **pas de fiche**, juste
   le PDF / les fichiers fournis (sauf si on demande explicitement autre chose).
 
