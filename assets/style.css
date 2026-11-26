@@ -48,7 +48,6 @@ nav.tabs a {
 }
 nav.tabs a.active[data-cat="raphael"] { background: var(--raphael); border-color: var(--raphael); color: #fff; }
 nav.tabs a.active[data-cat="snu"] { background: var(--snu); border-color: var(--snu); color: #fff; }
-nav.tabs a.active[data-cat="poubelle"] { background: var(--trash); border-color: var(--trash); color: #fff; }
 
 .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .home-card {
@@ -83,7 +82,7 @@ h2.section { margin: 28px 0 12px; font-size: 1.2rem; }
 
 .cat-raphael { --c: var(--raphael); --soft: var(--raphael-soft); }
 .cat-snu { --c: var(--snu); --soft: var(--snu-soft); }
-.cat-poubelle { --c: var(--trash); --soft: var(--trash-soft); }
+.cat-archive { --c: var(--trash); --soft: var(--trash-soft); }
 
 /* Pages de fiche */
 .fiche { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
@@ -102,3 +101,11 @@ nav.subtabs a {
 nav.subtabs a.active { background: var(--c); border-color: var(--c); color: #fff; }
 nav.subtabs .n { display: inline-block; min-width: 1.4em; text-align: center; font-size: .75rem; font-weight: 700; border-radius: 999px; background: var(--soft); color: var(--c); padding: 0 5px; }
 nav.subtabs a.active .n { background: rgba(255,255,255,.25); color: #fff; }
+
+/* Partie "Archivé" dans chaque matière */
+details.archives { margin-top: 28px; background: var(--card); border-radius: 12px; padding: 12px 16px; }
+details.archives > summary { font-size: 1.05rem; }
+details.archives .hint { color: var(--muted); font-weight: 400; font-size: .9rem; }
+details.archives .n { font-size: .75rem; font-weight: 700; border-radius: 999px; background: var(--trash-soft); color: var(--trash); padding: 1px 7px; }
+details.archives .list, details.archives .empty { margin-top: 12px; }
+details.archives .item { opacity: .85; }

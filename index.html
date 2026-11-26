@@ -13,7 +13,6 @@
       <nav class="tabs">
         <a href="#raphael" data-cat="raphael">Raphaël</a>
         <a href="#snu" data-cat="snu">Snu</a>
-        <a href="#poubelle" data-cat="poubelle">🗑️ Poubelle</a>
       </nav>
     </header>
     <main id="app"></main>
@@ -70,17 +69,17 @@
       return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     }
 
-    function carte(r, dansPoubelle) {
+    function carte(r, archive) {
       const n = joursRestants(r.dateTest);
       let badge;
-      if (dansPoubelle) badge = `<span class="badge">${esc(CATS[r.categorie]?.nom || r.categorie)}</span>`;
+      if (archive) badge = `<span class="badge">Archivé</span>`;
       else if (n === 0) badge = `<span class="badge today">C'est aujourd'hui !</span>`;
       else badge = `<span class="badge">Dans ${n} jour${n > 1 ? "s" : ""}</span>`;
       const titre = r.page ? `<a href="${esc(r.page)}">${esc(r.titre)}</a>` : esc(r.titre);
       const fichiers = (r.fichiers || []).map(f => `<a href="${esc(f.chemin)}" target="_blank" rel="noopener">📄 ${esc(f.nom)}</a>`).join("");
       const liens = (r.page ? `<a href="${esc(r.page)}">📝 Voir la fiche</a>` : "") + fichiers;
       return `
-        <article class="item cat-${dansPoubelle ? "poubelle" : r.categorie}">
+        <article class="item cat-${archive ? "archive" : r.categorie}">
           <div class="top"><h3>${titre}</h3>${badge}</div>
           <div class="meta">${r.matiere ? esc(nomMatiere(r.categorie, r.matiere)) + " · " : ""}Test le ${formatDate(r.dateTest)}</div>
           ${r.description ? `<p>${esc(r.description)}</p>` : ""}
@@ -88,9 +87,9 @@
         </article>`;
     }
 
-    function liste(items, dansPoubelle, vide) {
+    function liste(items, archive, vide) {
       if (!items.length) return `<div class="empty">${vide}</div>`;
-      return `<div class="list">${items.map(r => carte(r, dansPoubelle)).join("")}</div>`;
+      return `<div class="list">${items.map(r => carte(r, archive)).join("")}</div>`;
     }
 
     function render() {
@@ -100,21 +99,22 @@
       document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("active", a.dataset.cat === route));
 
       if (CATS[route]) {
-        const items = all.filter(r => r.categorie === route && !estPassee(r)).sort((a, b) => a.dateTest.localeCompare(b.dateTest));
-        const mats = matieresDe(route, items);
+        const deLaCat = all.filter(r => r.categorie === route);
+        const items = deLaCat.filter(r => !estPassee(r)).sort((a, b) => a.dateTest.localeCompare(b.dateTest));
+        const mats = matieresDe(route, deLaCat);
         const filtres = items.filter(r => !sous || r.matiere === sous);
+        // Partie "Archivé" : les anciens thèmes (test passé) de la matière choisie.
+        const archives = deLaCat.filter(r => estPassee(r) && (!sous || r.matiere === sous)).sort((a, b) => b.dateTest.localeCompare(a.dateTest));
         const puce = (id, nom, n) => `<a class="${(sous || "") === id ? "active" : ""}" href="#${route}${id ? "/" + encodeURIComponent(id) : ""}">${esc(nom)}${n ? ` <span class="n">${n}</span>` : ""}</a>`;
         const puces = mats.length ? `<nav class="subtabs">${puce("", "Toutes", items.length)}${mats.map(m => puce(m.id, m.nom, items.filter(r => r.matiere === m.id).length)).join("")}</nav>` : "";
         const titre = sous ? `${CATS[route].nom} · ${esc(nomMatiere(route, sous))}` : CATS[route].texte;
         app.innerHTML = `<div class="cat-${route}">${puces}<h2 class="section">${titre}</h2>` +
-          liste(filtres, false, sous ? "Rien à réviser dans cette matière 🎉" : "Rien à réviser pour l'instant 🎉") + `</div>`;
+          liste(filtres, false, sous ? "Rien à réviser dans cette matière 🎉" : "Rien à réviser pour l'instant 🎉") +
+          `<details class="archives">
+            <summary>📦 Archivé <span class="n">${archives.length}</span> <span class="hint">— anciens thèmes${sous ? " de " + esc(nomMatiere(route, sous)) : ""}</span></summary>
+            ${liste(archives, true, "Aucun ancien thème pour l'instant.")}
+          </details></div>`;
         document.title = CATS[route].nom + " · Révisions";
-      } else if (route === "poubelle") {
-        const items = all.filter(estPassee).sort((a, b) => b.dateTest.localeCompare(a.dateTest));
-        app.innerHTML = `<h2 class="section">🗑️ Poubelle</h2>
-          <p class="intro">Les révisions dont le test est passé. Toujours consultables pour vérifier 2-3 trucs.</p>` +
-          liste(items, true, "La poubelle est vide.");
-        document.title = "Poubelle · Révisions";
       } else {
         const compte = c => all.filter(r => r.categorie === c && !estPassee(r)).length;
         const prochaine = c => all.filter(r => r.categorie === c && !estPassee(r)).sort((a, b) => a.dateTest.localeCompare(b.dateTest))[0];
@@ -126,10 +126,7 @@
             <p>${p ? "Prochain test : " + esc(p.titre) + " (" + formatDate(p.dateTest) + ")" : "Aucun test prévu"}</p>
           </a>`;
         };
-        app.innerHTML = `<div class="home-grid">${bloc("raphael")}${bloc("snu")}
-          <a class="home-card cat-poubelle" href="#poubelle"><h2>🗑️ Poubelle</h2>
-            <p>Les révisions des tests passés</p><div class="count">${all.filter(estPassee).length}</div></a>
-        </div>`;
+        app.innerHTML = `<div class="home-grid">${bloc("raphael")}${bloc("snu")}</div>`;
         document.title = "Révisions";
       }
     }

@@ -12,6 +12,6 @@
 //   fichiers:  [ { nom: "Cours (PDF)", chemin: "revisions/raphael/2026-12-03-maths-fractions/cours.pdf" } ]
 // }
 //
-// Une révision passe automatiquement dans la Poubelle le lendemain de sa date de test.
+// Une révision passe automatiquement dans la partie « Archivé » de sa matière le lendemain de sa date de test.
 
 window.REVISIONS = [];

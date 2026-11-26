@@ -10,7 +10,8 @@ script de `index.html`. Le champ `matiere` d'une révision = l'`id` de la matiè
   informatique, sport, musique-df, chimie, biologie
 - Snu : pas encore définies (une matière utilisée par une révision apparaît quand même)
 
-Plus une **Poubelle** : les révisions dont la date de test est passée.
+Dans chaque matière (et dans « Toutes »), une partie **📦 Archivé** contient les anciens
+thèmes : les révisions dont la date de test est passée.
 
 ## Ajouter une révision ("rajoute dans Raphaël / Snu")
 
@@ -25,10 +26,10 @@ L'utilisateur fournit des fiches / PDF, une date de test et un prompt disant quo
    `matiere`, `dateTest`, `description`, `page`, `fichiers`).
 5. Commit + push sur la branche de travail.
 
-## Poubelle
+## Archivé
 
-Automatique : `index.html` compare `dateTest` à la date du jour ; une révision passe en
-Poubelle le lendemain de son test. Rien à déplacer. Ne jamais supprimer les anciennes
+Automatique : `index.html` compare `dateTest` à la date du jour ; une révision passe dans
+la partie Archivé de sa matière le lendemain de son test. Rien à déplacer. Ne jamais supprimer les anciennes
 révisions (elles doivent rester consultables).
 
 ## Modèle de fiche
