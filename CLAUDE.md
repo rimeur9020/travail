@@ -8,7 +8,8 @@ Chaque catégorie a des **sous-catégories (matières)**, définies dans `CATS` 
 script de `index.html`. Le champ `matiere` d'une révision = l'`id` de la matière.
 - Raphaël : anglais, allemand, physique, histoire, geographie, maths, musique-os,
   informatique, sport, musique-df, chimie, biologie
-- Snu : pas encore définies (une matière utilisée par une révision apparaît quand même)
+- Snu : allemand, francais, sciences, maths, histoire, informatique, musique, geographie,
+  japonais
 
 Dans chaque matière (et dans « Toutes »), une partie **📦 Archivé** contient les anciens
 thèmes : les révisions dont la date de test est passée.
