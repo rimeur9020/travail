@@ -14,4 +14,17 @@
 //
 // Une révision passe automatiquement dans la partie « Archivé » de sa matière le lendemain de sa date de test.
 
-window.REVISIONS = [];
+window.REVISIONS = [
+  {
+    id: "raphael-2026-11-30-physique-resistance-equivalente",
+    categorie: "raphael",
+    titre: "Résistance équivalente & lignes à haute tension",
+    matiere: "physique",
+    dateTest: "2026-11-30",
+    description: "Série, parallèle, circuits mixtes, lois de Kirchhoff, lignes HT, réseau électrique et tension triphasée (cours p. 23 à 28).",
+    page: "revisions/raphael/2026-11-30-physique-resistance-equivalente/index.html",
+    fichiers: [
+      { nom: "Photos du cours", chemin: "revisions/raphael/2026-11-30-physique-resistance-equivalente/index.html#photos" }
+    ]
+  },
+];

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Résistance équivalente · Révisions</title>
+  <link rel="stylesheet" href="../../../assets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})"></script>
+  <style>
+    .formule { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; overflow-x: auto; }
+    .piege { border-left: 4px solid #e0a000; background: rgba(224,160,0,.1); border-radius: 8px; padding: 10px 14px; margin: 12px 0; }
+    .sommaire { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; padding: 0; list-style: none; }
+    .sommaire a { text-decoration: none; font-size: .9rem; padding: 4px 10px; border-radius: 999px; background: var(--soft); color: var(--c); font-weight: 600; }
+    table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: .95rem; }
+    th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; }
+    th { background: var(--soft); }
+    .tablewrap { overflow-x: auto; }
+    .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+    .photos img { width: 100%; border-radius: 8px; border: 1px solid var(--border); }
+    details .sol { margin-top: 8px; }
+  </style>
+</head>
+<body class="cat-raphael">
+  <div class="wrap">
+    <a class="back" href="../../../index.html#raphael/physique">← Retour à Physique</a>
+    <div class="fiche">
+      <h1>⚡ Résistance équivalente & lignes à haute tension</h1>
+      <p class="meta">Physique · Test le lundi 30 novembre 2026 · Cours p. 23 à 28</p>
+
+      <ul class="sommaire">
+        <li><a href="#essentiel">L'essentiel</a></li>
+        <li><a href="#serie">Série</a></li>
+        <li><a href="#parallele">Parallèle</a></li>
+        <li><a href="#mixte">Mixte</a></li>
+        <li><a href="#ht">Lignes HT</a></li>
+        <li><a href="#reseau">Réseau & triphasé</a></li>
+        <li><a href="#exos">Exercices corrigés</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#photos">Photos du cours</a></li>
+      </ul>
+
+      <h2 id="essentiel">🎯 L'essentiel à savoir par cœur</h2>
+      <div class="tablewrap"><table>
+        <tr><th>Quoi</th><th>Formule</th></tr>
+        <tr><td>Loi d'Ohm</td><td>$U = R \cdot I$</td></tr>
+        <tr><td>Kirchhoff des tensions (dans une boucle)</td><td>$U = U_1 + U_2 + U_3$</td></tr>
+        <tr><td>Kirchhoff des courants (à un nœud)</td><td>$I = I_1 + I_2 + I_3$</td></tr>
+        <tr><td>Résistances en <b>série</b></td><td>$R_{éq} = R_1 + R_2 + R_3 + \dots$</td></tr>
+        <tr><td>Résistances en <b>parallèle</b></td><td>$\dfrac{1}{R_{éq}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dfrac{1}{R_3} + \dots$</td></tr>
+        <tr><td>2 résistances en parallèle (raccourci)</td><td>$R_{éq} = \dfrac{R_1 \cdot R_2}{R_1 + R_2}$</td></tr>
+        <tr><td>Puissance</td><td>$P = U \cdot I$</td></tr>
+        <tr><td>Pertes par effet Joule (ligne à 2 câbles)</td><td>$P_{th} = 2 R_L I^2$</td></tr>
+        <tr><td>Tension à la centrale</td><td>$U' = 2R_L I + U$</td></tr>
+        <tr><td>Rendement de la ligne</td><td>$\eta = \dfrac{U I}{U' I} = \dfrac{U}{U'}$</td></tr>
+      </table></div>
+
+      <h2 id="serie">1. Résistances en série</h2>
+      <p>Les résistances sont <b>à la suite</b>, sur un seul chemin.</p>
+      <ul>
+        <li>Le <b>courant est le même</b> partout : $I$.</li>
+        <li>Les <b>tensions s'additionnent</b> : $U = U_1 + U_2 + U_3$.</li>
+        <li>$R_{éq} = R_1 + R_2 + R_3$ → toujours <b>plus grande</b> que chaque résistance.</li>
+        <li>Plus on ajoute de résistances en série, plus le courant <b>diminue</b>.</li>
+      </ul>
+      <div class="formule"><b>Exemple du cours :</b> $R_1 = 2\,\Omega$, $R_2 = 3\,\Omega$, $R_3 = 1\,\Omega$, $I = 2\,A$<br>
+        $R_{éq} = 2 + 3 + 1 = 6\,\Omega$ · $U_1 = 2 \cdot 2 = 4\,V$ · $U_2 = 3 \cdot 2 = 6\,V$ · $U_3 = 1 \cdot 2 = 2\,V$ · total $= 12\,V$ ✔</div>
+
+      <h2 id="parallele">2. Résistances en parallèle</h2>
+      <p>Les résistances sont sur des <b>branches différentes</b> entre les deux mêmes points.</p>
+      <ul>
+        <li>La <b>tension est la même</b> sur chaque branche : $U$.</li>
+        <li>Les <b>courants s'additionnent</b> : $I = I_1 + I_2 + I_3$, avec $I_k = \dfrac{U}{R_k}$.</li>
+        <li>$\dfrac{1}{R_{éq}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dfrac{1}{R_3}$ → toujours <b>plus petite</b> que la plus petite résistance.</li>
+        <li>Plus on ajoute de branches, plus le courant total <b>augmente</b>.</li>
+        <li>Le courant se répartit : <b>plus la résistance est petite, plus elle reçoit de courant</b>.</li>
+      </ul>
+      <div class="formule"><b>Exemple du cours :</b> $R_1 = 2\,\Omega$, $R_2 = 3\,\Omega$, $R_3 = 1\,\Omega$, $U = 12\,V$<br>
+        $I_1 = \frac{12}{2} = 6\,A$ · $I_2 = \frac{12}{3} = 4\,A$ · $I_3 = \frac{12}{1} = 12\,A$ · $I = 22\,A$<br>
+        $\frac{1}{R_{éq}} = \frac{1}{2} + \frac{1}{3} + \frac{1}{1} = \frac{3 + 2 + 6}{6} = \frac{11}{6}\,\Omega^{-1}$ ⟹ $R_{éq} = \frac{6}{11} \approx 0{,}55\,\Omega$<br>
+        Vérification : $\frac{12}{6/11} = 22\,A$ ✔</div>
+      <div class="piege"><b>⚠️ Piège n°1 :</b> le calcul $\frac{1}{R_1} + \frac{1}{R_2} + \dots$ donne $\frac{1}{R_{éq}}$ (en $\Omega^{-1}$), <b>pas</b> $R_{éq}$ ! Il faut toujours <b>retourner la fraction</b> à la fin : $\frac{11}{6}\,\Omega^{-1}$ ⟹ $R_{éq} = \frac{6}{11}\,\Omega$.<br>
+        Vérifie toujours : en parallèle, $R_{éq}$ doit être plus petite que la plus petite résistance.</div>
+
+      <h2 id="mixte">3. Circuit mixte (série + parallèle)</h2>
+      <p><b>Méthode :</b> on travaille <b>par sections</b>, de l'intérieur vers l'extérieur.</p>
+      <ol>
+        <li>Repérer les groupes de résistances qui sont <b>clairement</b> en série ou en parallèle.</li>
+        <li>Remplacer chaque groupe par sa résistance équivalente (refaire un petit schéma).</li>
+        <li>Recommencer jusqu'à n'avoir plus qu'<b>une seule</b> résistance : c'est $R_{éq}$.</li>
+        <li>Courant total : $I = \dfrac{U}{R_{éq}}$. Puis on « redescend » : on calcule les tensions avec $U = RI$ et les courants dans les branches avec $I = U/R$.</li>
+      </ol>
+      <div class="formule"><b>Exemple du cours (p. 24, circuit 12 V à 5 résistances) :</b><br>
+        Mesures : $U_1 = 2\,V$, $I_1 = 10\,A$ · $U_2 = U_3 = 10\,V$, $I_2 = I_3 = 4\,A$ · $U_4 = U_5 = 5\,V$, $I_4 = I_5 = 2\,A$<br>
+        Résistances ($R = U/I$) : $R_1 = \frac{2}{10} = 0{,}2\,\Omega$ · $R_2 = R_3 = \frac{10}{4} = 2{,}5\,\Omega$ · $R_4 = R_5 = \frac{5}{2} = 2{,}5\,\Omega$<br>
+        Par sections : $R_4 + R_5 = 5\,\Omega$ (série) · puis $\frac{1}{R_p} = \frac{1}{2{,}5} + \frac{1}{2{,}5} + \frac{1}{5} = \frac{2}{5} + \frac{2}{5} + \frac{1}{5} = 1$ ⟹ $R_p = 1\,\Omega$<br>
+        $R_{éq} = R_1 + R_p = 0{,}2 + 1 = 1{,}2\,\Omega = \frac{6}{5}\,\Omega$ · Vérification : $\frac{12}{1{,}2} = 10\,A$ ✔</div>
+      <div class="piege"><b>⚠️ Dans tes notes :</b> tu as écrit $U_5 = 6\,V$, mais c'est <b>5 V</b> ($U_4 + U_5$ doit faire 10 V, comme $U_2$ et $U_3$). Et les résistances sont en $\Omega$ : $R_1 = \frac{1}{5}\,\Omega$, $R_2 = \frac{5}{2}\,\Omega$ (les $\Omega^{-1}$, c'est pour $\frac{1}{R}$).</div>
+
+      <h2 id="ht">4. Lignes à haute tension</h2>
+      <p>On transporte l'électricité de la centrale jusqu'au consommateur avec <b>2 câbles</b> qui ont chacun une résistance $R_L$.
+        À cause de l'<b>effet Joule</b>, les câbles chauffent et on perd de l'énergie.</p>
+      <ul>
+        <li>Pertes : $P_{th} = 2 R_L I^2$ → elles dépendent du <b>carré du courant</b>.</li>
+        <li>On ne peut agir que sur $I$ pour diminuer les pertes.</li>
+        <li>Pour une même puissance $P = U \cdot I$ : si $U$ est <b>grande</b>, $I$ est <b>petit</b> (inversement proportionnels).</li>
+        <li>Courant 100× plus petit ⟹ pertes <b>10 000× plus petites</b> (car $I^2$).</li>
+        <li>Tension à fournir à la centrale : $U' = 2R_L I + U$ (Kirchhoff des tensions).</li>
+        <li>Rendement : $\eta = \dfrac{U}{U'}$.</li>
+      </ul>
+      <div class="formule"><b>Exemple du cours :</b> ligne de 10 km, cuivre de 5 mm, $R_L = 8{,}56\,\Omega$, $P = 50\,kW$<br>
+        Haute tension $U_1 = 23\,000\,V$ : $I_1 = \frac{50\,000}{23\,000} = 2{,}174\,A$ · $P_{th} = 81\,W$ · $U'_1 = 23\,037\,V$ · $\eta_1 = 99{,}8\,\%$<br>
+        Basse tension $U_2 = 230\,V$ : $I_2 = 217{,}4\,A$ · $P_{th} = 808\,712\,W$ · $U'_2 = 3950\,V$ · $\eta_2 = 5{,}8\,\%$</div>
+      <p>👉 <b>Conclusion :</b> la haute tension permet un transport d'énergie <b>beaucoup plus efficace</b>.</p>
+
+      <h2 id="reseau">5. Le réseau électrique & la tension triphasée</h2>
+      <ul>
+        <li>Lignes surtout <b>aériennes</b> (câbles sur des pylônes) : l'air isole les câbles, on évite les arcs électriques et on limite les champs magnétiques au sol. Les câbles n'ont <b>pas d'isolation</b> (ça ajouterait masse et coût).</li>
+        <li>Câbles surtout en <b>aluminium</b> : beaucoup plus léger que le cuivre et bon marché.</li>
+        <li>La tension baisse par étapes dans des <b>postes de transformation</b> (niveaux 2, 4 et 6) :</li>
+      </ul>
+      <div class="tablewrap"><table>
+        <tr><th>Niveau</th><th>Nom</th><th>Tension</th></tr>
+        <tr><td>1</td><td>Très haute tension (THT)</td><td>220 ou 380 kV</td></tr>
+        <tr><td>3</td><td>Haute tension (HT)</td><td>36 à 150 kV</td></tr>
+        <tr><td>5</td><td>Moyenne tension</td><td>1 à 36 kV</td></tr>
+        <tr><td>7</td><td>Basse tension</td><td>&lt; 1 kV</td></tr>
+      </table></div>
+      <ul>
+        <li><b>Isolateurs en verre</b> (« assiettes » ou « galettes ») : ils éloignent les câbles du pylône. Plus la tension est haute, plus la chaîne est longue (jusqu'à plusieurs mètres). Ça évite les décharges, surtout par temps d'orage.</li>
+        <li>Les câbles vont par <b>groupes de 3</b>. Le <b>câble de garde</b>, tout en haut, sert de <b>paratonnerre</b>.</li>
+        <li><b>Tension triphasée</b> : 3 tensions sinusoïdales décalées d'<b>un tiers de période (120°)</b>. Leur somme vaut toujours <b>zéro</b> → on peut reconstruire le neutre au transformateur sans le transporter.</li>
+        <li>Dans l'alternateur d'une centrale : 3 bobines placées à 120° autour du rotor.</li>
+        <li>Pourquoi le triphasé (TAT) plutôt que monophasé (TAM) ou continu (TC) ? <b>Moins de pertes</b> et <b>ligne plus légère, donc moins chère</b>.</li>
+      </ul>
+
+      <h2 id="exos">✏️ Exercices corrigés</h2>
+      <p class="meta">Essaie d'abord, puis clique pour voir la correction.</p>
+
+      <details><summary>Exercices p. 24 (n°1 à 6) – vérification de tes réponses</summary><div class="sol">
+        <p>Toutes tes réponses sont justes 👍</p>
+        <ol>
+          <li>Série 100 + 200 : $R_{éq} = 300\,\Omega$</li>
+          <li>Série 100 + 200 + 300 : $R_{éq} = 600\,\Omega$</li>
+          <li>$I = \frac{12}{300} = 0{,}04\,A$ et $I = \frac{12}{600} = 0{,}02\,A$</li>
+          <li>Parallèle 100 // 200 : $\frac{1}{R_{éq}} = \frac{3}{200}$ ⟹ $R_{éq} = \frac{200}{3} \approx 66{,}7\,\Omega$</li>
+          <li>Parallèle 100 // 200 // 300 : $\frac{1}{R_{éq}} = \frac{6 + 3 + 2}{600} = \frac{11}{600}$ ⟹ $R_{éq} = \frac{600}{11} \approx 54{,}5\,\Omega$</li>
+          <li>$I = \frac{12}{66{,}7} = 0{,}18\,A$ et $I = \frac{12}{54{,}5} = 0{,}22\,A$.<br>
+            <b>Répartition</b> (ce que tu n'as pas écrit) : chaque branche a la même tension 12 V, donc le courant se partage selon $I_k = \frac{12}{R_k}$ :
+            n°4 : $0{,}12\,A$ dans 100 Ω et $0{,}06\,A$ dans 200 Ω · n°5 : $0{,}12\,A$, $0{,}06\,A$ et $0{,}04\,A$.
+            <b>La plus petite résistance reçoit le plus de courant.</b></li>
+        </ol>
+      </div></details>
+
+      <details><summary>Circuits mixtes p. 25, n°1 : $R_1 = 100\,\Omega$ // $R_2 = 200\,\Omega$, puis en série avec $R_3 = 300\,\Omega$, sous 12 V</summary><div class="sol">
+        <p>$R_{12} = \frac{200}{3} \approx 66{,}7\,\Omega$ · $R_{éq} = 66{,}7 + 300 \approx 366{,}7\,\Omega$ (ton résultat est juste).</p>
+        <p>Courant total (traverse $R_3$) : $I = \frac{12}{366{,}7} \approx 0{,}0327\,A$ (32,7 mA)</p>
+        <p>$U_3 = 300 \cdot 0{,}0327 \approx 9{,}82\,V$ · $U_1 = U_2 = 66{,}7 \cdot 0{,}0327 \approx 2{,}18\,V$ (vérif : $9{,}82 + 2{,}18 = 12\,V$ ✔)</p>
+        <p>$I_1 = \frac{2{,}18}{100} \approx 0{,}0218\,A$ · $I_2 = \frac{2{,}18}{200} \approx 0{,}0109\,A$ (vérif : $I_1 + I_2 = 0{,}0327\,A$ ✔)</p>
+      </div></details>
+
+      <details><summary>Circuits mixtes p. 25, n°2 : $R_1 = 11$, $R_2 = 10$, $R_3 = 15$, $R_4 = 30$, $R_5 = 25\,\Omega$, sous 12 V</summary><div class="sol">
+        <p>Branche du haut : $R_1$, puis $(R_2 // R_3)$, puis $R_4$ en série. Branche du bas : $R_5$. Les deux branches sont en parallèle (le générateur est branché aux deux extrémités).</p>
+        <p>$R_{23} = \frac{10 \cdot 15}{10 + 15} = \frac{150}{25} = 6\,\Omega$</p>
+        <p>Branche du haut : $11 + 6 + 30 = 47\,\Omega$</p>
+        <p>$\frac{1}{R_{éq}} = \frac{1}{47} + \frac{1}{25}$ ⟹ $R_{éq} = \frac{47 \cdot 25}{47 + 25} = \frac{1175}{72} \approx 16{,}3\,\Omega$</p>
+        <p><b>Branche du bas :</b> $U_5 = 12\,V$ · $I_5 = \frac{12}{25} = 0{,}48\,A$</p>
+        <p><b>Branche du haut :</b> $I = \frac{12}{47} \approx 0{,}255\,A$ → $U_1 = 11 \cdot 0{,}255 \approx 2{,}81\,V$ · $U_{23} = 6 \cdot 0{,}255 \approx 1{,}53\,V$ · $U_4 = 30 \cdot 0{,}255 \approx 7{,}66\,V$ (total 12 V ✔)</p>
+        <p>$I_2 = \frac{1{,}53}{10} \approx 0{,}153\,A$ · $I_3 = \frac{1{,}53}{15} \approx 0{,}102\,A$ · $I_1 = I_4 \approx 0{,}255\,A$</p>
+        <p>Courant total : $0{,}48 + 0{,}255 \approx 0{,}735\,A$ (vérif : $\frac{12}{16{,}3} \approx 0{,}735\,A$ ✔)</p>
+      </div></details>
+
+      <details><summary>p. 25, n°3 : Comment sont branchés les appareils sur une multiprise ? Pourquoi pas trop nombreux ?</summary><div class="sol">
+        <p>Ils sont branchés <b>en parallèle</b> : chaque appareil reçoit la même tension (230 V).</p>
+        <p>Les courants s'additionnent ($I = I_1 + I_2 + \dots$) : plus il y a d'appareils, plus $R_{éq}$ diminue et plus le <b>courant total</b> dans le câble de la multiprise est grand.
+          Le câble chauffe (<b>effet Joule</b>, $P = RI^2$) → risque de surchauffe et d'<b>incendie</b>.</p>
+      </div></details>
+
+      <details><summary>Exercice : Lignes HT (p. 28) – 2 fils de cuivre de 50 km, 5 mm, consommateur de 20 kW</summary><div class="sol">
+        <p>Le cours donne $8{,}56\,\Omega$ pour 10 km (même câble). Pour 50 km : $R_L = 5 \cdot 8{,}56 \approx 42{,}8\,\Omega$ par fil, donc $2R_L \approx 85{,}6\,\Omega$.</p>
+        <p>Méthode : $I = \frac{P}{U}$ · $P_{th} = 2R_L I^2$ · $U' = 2R_L I + U$ · $\eta = \frac{U}{U'}$</p>
+        <div class="tablewrap"><table>
+          <tr><th>Tension $U$</th><th>Courant $I$</th><th>Pertes $P_{th}$</th><th>$U'$ centrale</th><th>Rendement $\eta$</th></tr>
+          <tr><td>(a) 230 V</td><td>87,0 A</td><td>≈ 647 kW 😱</td><td>≈ 7670 V</td><td>≈ 3,0 %</td></tr>
+          <tr><td>(b) 1500 V</td><td>13,3 A</td><td>≈ 15,2 kW</td><td>≈ 2641 V</td><td>≈ 56,8 %</td></tr>
+          <tr><td>(c) 15 000 V</td><td>1,33 A</td><td>≈ 152 W</td><td>≈ 15 114 V</td><td>≈ 99,2 %</td></tr>
+        </table></div>
+        <p><b>Conclusion :</b> plus la tension est haute, plus le courant est petit, et les pertes diminuent avec le <b>carré</b> du courant.
+          À 230 V, on perd presque tout (les pertes sont 32× plus grandes que la puissance utile !). À 15 000 V, on ne perd presque rien.
+          → Il faut transporter l'électricité en <b>haute tension</b>.</p>
+      </div></details>
+
+      <h2 id="quiz">🧠 Quiz (p. 26 et 27)</h2>
+
+      <details><summary>Q1. Un fil est branché aux bornes d'une ampoule. Le courant… (a) continue dans l'ampoule (b) moitié-moitié (c) passe uniquement dans le fil</summary><div class="sol">
+        <p><b>c.</b> Le fil n'a (presque) pas de résistance : c'est un <b>court-circuit</b>. Tout le courant prend le fil, l'ampoule s'éteint.</p>
+      </div></details>
+
+      <details><summary>Q2. Deux lampes identiques A et B en série sur 12 V, l'interrupteur est branché aux bornes de B. On ferme l'interrupteur : l'éclat de A…</summary><div class="sol">
+        <p><b>a. Augmente.</b> L'interrupteur court-circuite B (B s'éteint). A reçoit maintenant toute la tension (12 V au lieu de 6 V), donc plus de courant → A brille plus.</p>
+      </div></details>
+
+      <details><summary>Q3. Quatre lampes identiques : circuit I (2 lampes en parallèle) ou circuit II (2 lampes en série). Lequel éclaire le plus ?</summary><div class="sol">
+        <p><b>a. Le circuit I.</b> En parallèle, chaque lampe reçoit toute la tension U. En série, chaque lampe n'a que U/2 et le courant est plus faible.</p>
+      </div></details>
+
+      <details><summary>Q4. Trier par ordre croissant le courant de l'ampèremètre : (a) 1 lampe, (b) 2 lampes en parallèle, (c) 3 lampes en parallèle</summary><div class="sol">
+        <p><b>(a) &lt; (b) &lt; (c)</b> : $I$, puis $2I$, puis $3I$. Chaque branche en parallèle ajoute son courant.</p>
+      </div></details>
+
+      <details><summary>Q5. A et B en série sur une branche, C seule sur l'autre branche (en parallèle). Trier le courant et la tension de chaque ampoule.</summary><div class="sol">
+        <p><b>Courant :</b> $I_A = I_B &lt; I_C$ (la branche A+B a 2 résistances, donc 2× moins de courant).</p>
+        <p><b>Tension :</b> $U_A = U_B &lt; U_C$ ($U_A = U_B = \frac{U}{2}$ et $U_C = U$).</p>
+      </div></details>
+
+      <details><summary>Questions éclair (réponds dans ta tête)</summary><div class="sol">
+        <ol>
+          <li>En série, qu'est-ce qui est pareil partout ? → <b>le courant</b></li>
+          <li>En parallèle, qu'est-ce qui est pareil partout ? → <b>la tension</b></li>
+          <li>On ajoute une résistance en parallèle : $R_{éq}$ augmente ou diminue ? → <b>diminue</b></li>
+          <li>Pourquoi la haute tension ? → courant plus petit → pertes par effet Joule ($2R_LI^2$) beaucoup plus petites</li>
+          <li>Décalage entre les 3 tensions du triphasé ? → <b>120°</b> (1/3 de période)</li>
+          <li>À quoi sert le câble de garde ? → <b>paratonnerre</b></li>
+          <li>Pourquoi des câbles en aluminium ? → <b>léger et bon marché</b></li>
+        </ol>
+      </div></details>
+
+      <h2 id="photos">📷 Photos du cours</h2>
+      <div class="photos">
+        <a href="cours-1.jpg" target="_blank"><img src="cours-1.jpg" alt="Cours p. 22-23 : série et parallèle" loading="lazy"></a>
+        <a href="cours-2.jpg" target="_blank"><img src="cours-2.jpg" alt="Exercices p. 24 et circuit mixte" loading="lazy"></a>
+        <a href="cours-3.jpg" target="_blank"><img src="cours-3.jpg" alt="Circuits mixtes et quiz p. 25-26" loading="lazy"></a>
+        <a href="cours-4.jpg" target="_blank"><img src="cours-4.jpg" alt="Quiz Kirchhoff et lignes HT p. 27" loading="lazy"></a>
+        <a href="cours-5.jpg" target="_blank"><img src="cours-5.jpg" alt="Lignes HT, réseau, triphasé" loading="lazy"></a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
