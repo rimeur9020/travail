@@ -27,4 +27,16 @@ window.REVISIONS = [
       { nom: "Photos du cours", chemin: "revisions/raphael/2026-11-30-physique-resistance-equivalente/index.html#photos" }
     ]
   },
+  {
+    id: "snu-2026-11-27-allemand-wir-und-die-medien",
+    categorie: "snu",
+    titre: "Voc : Wir und die Medien (unité 2)",
+    matiere: "allemand",
+    dateTest: "2026-11-27",
+    description: "Test de vocabulaire : les médias et ce qu'on fait avec le natel (p. 12-13).",
+    fichiers: [
+      { nom: "Voc p. 12", chemin: "revisions/snu/2026-11-27-allemand-wir-und-die-medien/voc-p12.jpg" },
+      { nom: "Voc p. 13", chemin: "revisions/snu/2026-11-27-allemand-wir-und-die-medien/voc-p13.jpg" }
+    ]
+  },
 ];
