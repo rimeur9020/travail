@@ -24,7 +24,8 @@ L'utilisateur fournit des fiches / PDF, une date de test et un prompt disant quo
    `cat-<categorie>` sur `<body>`.
 4. Ajouter une entrée dans `data/revisions.js` (champs : `id`, `categorie`, `titre`,
    `matiere`, `dateTest`, `description`, `page`, `fichiers`).
-5. Commit + push sur la branche de travail.
+5. Commit + push sur la branche de travail, puis aussi sur `main` (`git push origin HEAD:main`) :
+   le site en ligne (GitHub Pages, https://rimeur9020.github.io/travail/) est servi depuis `main`.
 
 ## Archivé
 
