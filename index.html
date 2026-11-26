@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Révisions</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <h1><a href="#">📚 Révisions</a></h1>
+      <nav class="tabs">
+        <a href="#raphael" data-cat="raphael">Raphaël</a>
+        <a href="#snu" data-cat="snu">Snu</a>
+        <a href="#poubelle" data-cat="poubelle">🗑️ Poubelle</a>
+      </nav>
+    </header>
+    <main id="app"></main>
+  </div>
+
+  <script src="data/revisions.js"></script>
+  <script>
+    const CATS = {
+      raphael: { nom: "Raphaël", texte: "Ce que Raphaël doit réviser" },
+      snu: { nom: "Snu", texte: "Ce que Snu doit réviser" },
+    };
+
+    function aujourdhui() {
+      const d = new Date();
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+    // Une révision est "passée" quand sa date de test est strictement avant aujourd'hui.
+    const estPassee = r => r.dateTest < aujourdhui();
+
+    function formatDate(iso) {
+      const [y, m, d] = iso.split("-").map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    }
+    function joursRestants(iso) {
+      const [y, m, d] = iso.split("-").map(Number);
+      const t = new Date(); t.setHours(0, 0, 0, 0);
+      return Math.round((new Date(y, m - 1, d) - t) / 86400000);
+    }
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function carte(r, dansPoubelle) {
+      const n = joursRestants(r.dateTest);
+      let badge;
+      if (dansPoubelle) badge = `<span class="badge">${esc(CATS[r.categorie]?.nom || r.categorie)}</span>`;
+      else if (n === 0) badge = `<span class="badge today">C'est aujourd'hui !</span>`;
+      else badge = `<span class="badge">Dans ${n} jour${n > 1 ? "s" : ""}</span>`;
+      const titre = r.page ? `<a href="${esc(r.page)}">${esc(r.titre)}</a>` : esc(r.titre);
+      const fichiers = (r.fichiers || []).map(f => `<a href="${esc(f.chemin)}" target="_blank" rel="noopener">📄 ${esc(f.nom)}</a>`).join("");
+      const liens = (r.page ? `<a href="${esc(r.page)}">📝 Voir la fiche</a>` : "") + fichiers;
+      return `
+        <article class="item cat-${dansPoubelle ? "poubelle" : r.categorie}">
+          <div class="top"><h3>${titre}</h3>${badge}</div>
+          <div class="meta">${r.matiere ? esc(r.matiere) + " · " : ""}Test le ${formatDate(r.dateTest)}</div>
+          ${r.description ? `<p>${esc(r.description)}</p>` : ""}
+          ${liens ? `<div class="files">${liens}</div>` : ""}
+        </article>`;
+    }
+
+    function liste(items, dansPoubelle, vide) {
+      if (!items.length) return `<div class="empty">${vide}</div>`;
+      return `<div class="list">${items.map(r => carte(r, dansPoubelle)).join("")}</div>`;
+    }
+
+    function render() {
+      const route = location.hash.replace("#", "");
+      const app = document.getElementById("app");
+      const all = window.REVISIONS || [];
+      document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("active", a.dataset.cat === route));
+
+      if (CATS[route]) {
+        const items = all.filter(r => r.categorie === route && !estPassee(r)).sort((a, b) => a.dateTest.localeCompare(b.dateTest));
+        app.innerHTML = `<h2 class="section">${CATS[route].texte}</h2>` +
+          liste(items, false, "Rien à réviser pour l'instant 🎉");
+        document.title = CATS[route].nom + " · Révisions";
+      } else if (route === "poubelle") {
+        const items = all.filter(estPassee).sort((a, b) => b.dateTest.localeCompare(a.dateTest));
+        app.innerHTML = `<h2 class="section">🗑️ Poubelle</h2>
+          <p class="intro">Les révisions dont le test est passé. Toujours consultables pour vérifier 2-3 trucs.</p>` +
+          liste(items, true, "La poubelle est vide.");
+        document.title = "Poubelle · Révisions";
+      } else {
+        const compte = c => all.filter(r => r.categorie === c && !estPassee(r)).length;
+        const prochaine = c => all.filter(r => r.categorie === c && !estPassee(r)).sort((a, b) => a.dateTest.localeCompare(b.dateTest))[0];
+        const bloc = (c) => {
+          const p = prochaine(c);
+          return `<a class="home-card cat-${c}" href="#${c}">
+            <h2>${CATS[c].nom}</h2><p>${CATS[c].texte}</p>
+            <div class="count">${compte(c)}</div>
+            <p>${p ? "Prochain test : " + esc(p.titre) + " (" + formatDate(p.dateTest) + ")" : "Aucun test prévu"}</p>
+          </a>`;
+        };
+        app.innerHTML = `<div class="home-grid">${bloc("raphael")}${bloc("snu")}
+          <a class="home-card cat-poubelle" href="#poubelle"><h2>🗑️ Poubelle</h2>
+            <p>Les révisions des tests passés</p><div class="count">${all.filter(estPassee).length}</div></a>
+        </div>`;
+        document.title = "Révisions";
+      }
+    }
+    window.addEventListener("hashchange", render);
+    render();
+  </script>
+</body>
+</html>

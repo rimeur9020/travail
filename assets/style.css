@@ -1,0 +1,94 @@
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #1d2130;
+  --muted: #646b80;
+  --border: #e2e5ee;
+  --raphael: #3b6fe0;
+  --raphael-soft: #e8efff;
+  --snu: #d9573b;
+  --snu-soft: #fdece8;
+  --trash: #7a7f8f;
+  --trash-soft: #eeeff3;
+  --today: #1f9d55;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161d;
+    --card: #1e212b;
+    --text: #e8eaf0;
+    --muted: #9aa0b2;
+    --border: #2e3240;
+    --raphael: #7ea2ff;
+    --raphael-soft: #1f2a46;
+    --snu: #ff8a6e;
+    --snu-soft: #3d241f;
+    --trash: #a3a8b8;
+    --trash-soft: #272a35;
+    --today: #4cd98a;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+a { color: inherit; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+header.site { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+header.site h1 { margin: 0; font-size: 1.6rem; }
+header.site h1 a { text-decoration: none; }
+nav.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+nav.tabs a {
+  text-decoration: none; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--card); font-weight: 600; font-size: .95rem;
+}
+nav.tabs a.active[data-cat="raphael"] { background: var(--raphael); border-color: var(--raphael); color: #fff; }
+nav.tabs a.active[data-cat="snu"] { background: var(--snu); border-color: var(--snu); color: #fff; }
+nav.tabs a.active[data-cat="poubelle"] { background: var(--trash); border-color: var(--trash); color: #fff; }
+
+.home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.home-card {
+  display: block; text-decoration: none; padding: 24px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--border); border-top: 6px solid var(--c);
+}
+.home-card h2 { margin: 0 0 6px; font-size: 1.5rem; color: var(--c); }
+.home-card p { margin: 0; color: var(--muted); }
+.home-card .count { font-size: 2rem; font-weight: 700; margin-top: 12px; color: var(--text); }
+
+h2.section { margin: 28px 0 12px; font-size: 1.2rem; }
+.list { display: grid; gap: 12px; }
+.item {
+  background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--c);
+  border-radius: 12px; padding: 16px;
+}
+.item .top { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+.item h3 { margin: 0; font-size: 1.1rem; }
+.item h3 a { text-decoration: none; }
+.item h3 a:hover { text-decoration: underline; }
+.badge { display: inline-block; font-size: .8rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--soft); color: var(--c); }
+.badge.today { background: var(--today); color: #fff; }
+.meta { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+.item p { margin: 8px 0 0; }
+.files { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.files a {
+  font-size: .9rem; text-decoration: none; padding: 6px 12px; border-radius: 8px;
+  background: var(--soft); color: var(--c); font-weight: 600;
+}
+.empty { color: var(--muted); padding: 24px; text-align: center; background: var(--card); border: 1px dashed var(--border); border-radius: 12px; }
+.intro { color: var(--muted); margin: 0 0 8px; }
+
+.cat-raphael { --c: var(--raphael); --soft: var(--raphael-soft); }
+.cat-snu { --c: var(--snu); --soft: var(--snu-soft); }
+.cat-poubelle { --c: var(--trash); --soft: var(--trash-soft); }
+
+/* Pages de fiche */
+.fiche { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+.fiche h1 { margin-top: 0; color: var(--c); }
+.fiche h2 { border-bottom: 2px solid var(--soft); padding-bottom: 4px; }
+.back { display: inline-block; margin-bottom: 16px; text-decoration: none; color: var(--muted); }
+details { border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+summary { cursor: pointer; font-weight: 600; }
