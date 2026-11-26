@@ -4,6 +4,12 @@ Site statique (HTML/CSS/JS, sans build) pour réviser. Deux catégories :
 - **Raphaël** (`raphael`) : ce que Raphaël doit réviser
 - **Snu** (`snu`, écrit S-N-U) : ce que Snu doit réviser
 
+Chaque catégorie a des **sous-catégories (matières)**, définies dans `CATS` en haut du
+script de `index.html`. Le champ `matiere` d'une révision = l'`id` de la matière.
+- Raphaël : anglais, allemand, physique, histoire, geographie, maths, musique-os,
+  informatique, sport, musique-df, chimie, biologie
+- Snu : pas encore définies (une matière utilisée par une révision apparaît quand même)
+
 Plus une **Poubelle** : les révisions dont la date de test est passée.
 
 ## Ajouter une révision ("rajoute dans Raphaël / Snu")

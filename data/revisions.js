@@ -5,7 +5,7 @@
 //   id:        "raphael-2026-12-03-maths-fractions", // unique, sert à l'URL
 //   categorie: "raphael",                             // "raphael" ou "snu"
 //   titre:     "Les fractions",
-//   matiere:   "Maths",
+//   matiere:   "maths",   // id de la sous-catégorie (voir CATS dans index.html)
 //   dateTest:  "2026-12-03",                          // AAAA-MM-JJ
 //   description: "Contrôle sur le chapitre 4.",
 //   page:      "revisions/raphael/2026-12-03-maths-fractions/index.html", // fiche (optionnel)

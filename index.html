@@ -21,10 +21,34 @@
 
   <script src="data/revisions.js"></script>
   <script>
+    // Sous-catégories (matières). Le champ "matiere" d'une révision = l'id ci-dessous.
     const CATS = {
-      raphael: { nom: "Raphaël", texte: "Ce que Raphaël doit réviser" },
-      snu: { nom: "Snu", texte: "Ce que Snu doit réviser" },
+      raphael: { nom: "Raphaël", texte: "Ce que Raphaël doit réviser", matieres: [
+        { id: "anglais", nom: "Anglais" },
+        { id: "allemand", nom: "Allemand" },
+        { id: "physique", nom: "Physique" },
+        { id: "histoire", nom: "Histoire" },
+        { id: "geographie", nom: "Géographie" },
+        { id: "maths", nom: "Maths" },
+        { id: "musique-os", nom: "Musique OS" },
+        { id: "informatique", nom: "Informatique" },
+        { id: "sport", nom: "Sport" },
+        { id: "musique-df", nom: "Musique DF" },
+        { id: "chimie", nom: "Chimie" },
+        { id: "biologie", nom: "Biologie" },
+      ] },
+      snu: { nom: "Snu", texte: "Ce que Snu doit réviser", matieres: [] },
     };
+    // Nom affiché d'une matière (si elle n'est pas dans la liste, on affiche le texte tel quel).
+    function nomMatiere(cat, m) {
+      return (CATS[cat]?.matieres || []).find(x => x.id === m)?.nom || m;
+    }
+    // Liste des matières d'une catégorie : celles définies + celles utilisées par des révisions.
+    function matieresDe(cat, items) {
+      const liste = [...(CATS[cat]?.matieres || [])];
+      items.forEach(r => { if (r.matiere && !liste.some(x => x.id === r.matiere)) liste.push({ id: r.matiere, nom: r.matiere }); });
+      return liste;
+    }
 
     function aujourdhui() {
       const d = new Date();
@@ -58,7 +82,7 @@
       return `
         <article class="item cat-${dansPoubelle ? "poubelle" : r.categorie}">
           <div class="top"><h3>${titre}</h3>${badge}</div>
-          <div class="meta">${r.matiere ? esc(r.matiere) + " · " : ""}Test le ${formatDate(r.dateTest)}</div>
+          <div class="meta">${r.matiere ? esc(nomMatiere(r.categorie, r.matiere)) + " · " : ""}Test le ${formatDate(r.dateTest)}</div>
           ${r.description ? `<p>${esc(r.description)}</p>` : ""}
           ${liens ? `<div class="files">${liens}</div>` : ""}
         </article>`;
@@ -70,15 +94,20 @@
     }
 
     function render() {
-      const route = location.hash.replace("#", "");
+      const [route, sous] = location.hash.replace("#", "").split("/").map(decodeURIComponent);
       const app = document.getElementById("app");
       const all = window.REVISIONS || [];
       document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("active", a.dataset.cat === route));
 
       if (CATS[route]) {
         const items = all.filter(r => r.categorie === route && !estPassee(r)).sort((a, b) => a.dateTest.localeCompare(b.dateTest));
-        app.innerHTML = `<h2 class="section">${CATS[route].texte}</h2>` +
-          liste(items, false, "Rien à réviser pour l'instant 🎉");
+        const mats = matieresDe(route, items);
+        const filtres = items.filter(r => !sous || r.matiere === sous);
+        const puce = (id, nom, n) => `<a class="${(sous || "") === id ? "active" : ""}" href="#${route}${id ? "/" + encodeURIComponent(id) : ""}">${esc(nom)}${n ? ` <span class="n">${n}</span>` : ""}</a>`;
+        const puces = mats.length ? `<nav class="subtabs">${puce("", "Toutes", items.length)}${mats.map(m => puce(m.id, m.nom, items.filter(r => r.matiere === m.id).length)).join("")}</nav>` : "";
+        const titre = sous ? `${CATS[route].nom} · ${esc(nomMatiere(route, sous))}` : CATS[route].texte;
+        app.innerHTML = `<div class="cat-${route}">${puces}<h2 class="section">${titre}</h2>` +
+          liste(filtres, false, sous ? "Rien à réviser dans cette matière 🎉" : "Rien à réviser pour l'instant 🎉") + `</div>`;
         document.title = CATS[route].nom + " · Révisions";
       } else if (route === "poubelle") {
         const items = all.filter(estPassee).sort((a, b) => b.dateTest.localeCompare(a.dateTest));
