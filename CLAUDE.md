@@ -37,8 +37,11 @@ L'utilisateur fournit des fiches / PDF, une date de test et un prompt disant quo
   pour apprendre à utiliser les formules, réponses vérifiables, indice + correction
   (modèle : `revisions/raphael/2026-11-30-physique-resistance-equivalente/exercices.html`).
   Lier depuis la fiche et dans `fichiers` de l'entrée.
-- Liste de vocabulaire (voc d'allemand, d'anglais, de japonais…) : **pas de fiche**, juste
-  le PDF / les fichiers fournis (sauf si on demande explicitement autre chose).
+- Liste de vocabulaire (voc d'allemand, d'anglais, de japonais…) : **pas de fiche**, mais
+  **toujours** une page `exercices.html` qui utilise l'entraîneur `assets/vocab.js`
+  (cartes, QCM, écrire, der/die/das, phrases à trous) : il suffit de remplir `window.VOCAB`
+  (modèle : `revisions/snu/2026-11-27-allemand-wir-und-die-medien/exercices.html`).
+  Recopier tout le voc (articles, pluriels, formes des verbes) et les phrases d'exemple.
 
 ## Archivé
 

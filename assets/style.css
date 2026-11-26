@@ -109,3 +109,43 @@ details.archives .hint { color: var(--muted); font-weight: 400; font-size: .9rem
 details.archives .n { font-size: .75rem; font-weight: 700; border-radius: 999px; background: var(--trash-soft); color: var(--trash); padding: 1px 7px; }
 details.archives .list, details.archives .empty { margin-top: 12px; }
 details.archives .item { opacity: .85; }
+
+/* Entraîneur de vocabulaire (assets/vocab.js) */
+.vocab-modes { margin-bottom: 16px; }
+.carte-vocab { position: relative; border: 1px solid var(--border); border-radius: 14px; padding: 24px 18px; text-align: center; background: var(--bg); }
+.carte-vocab .pos { position: absolute; top: 8px; right: 12px; color: var(--muted); font-size: .85rem; }
+.carte-vocab .gros { font-size: 1.5rem; font-weight: 700; margin: 10px 0; }
+.carte-vocab .verso { font-size: 1.3rem; color: var(--c); font-weight: 700; }
+.carte-vocab .formes, .liste-vocab .formes { color: var(--muted); font-weight: 400; font-size: .9rem; }
+.carte-vocab .phrase { font-size: 1.2rem; }
+.carte-vocab .trou { display: inline-block; min-width: 3em; border-bottom: 2px solid var(--c); color: var(--c); }
+.carte-vocab .trou.ok { color: var(--today); border-color: var(--today); }
+.carte-vocab .trou.ko { color: #d33; border-color: #d33; }
+.boutons { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 12px 0 0; }
+.boutons.sens { margin: 0 0 12px; }
+.fiche button, .boutons button { padding: 8px 14px; border-radius: 8px; border: 0; background: var(--c); color: #fff; font-weight: 600; cursor: pointer; font-size: .95rem; }
+.fiche button.secondaire { background: var(--soft); color: var(--c); }
+.fiche button.secondaire.actif { background: var(--c); color: #fff; }
+.fiche button.ok-btn { background: var(--today); }
+.fiche button.ko-btn { background: #d33; }
+.options { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 12px; }
+.options.art { grid-template-columns: repeat(3, 1fr); }
+.fiche .option { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 12px; font-weight: 500; }
+.fiche .option.bonne { background: var(--today); color: #fff; border-color: var(--today); }
+.fiche .option.mauvaise { background: #d33; color: #fff; border-color: #d33; }
+.fiche .option:disabled { cursor: default; }
+.saisie { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+.saisie input { font-size: 1.1rem; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); width: min(100%, 280px); }
+.claviers { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+.fiche .lettre { background: var(--soft); color: var(--c); padding: 4px 12px; }
+.retour { min-height: 1.5em; margin: 12px 0 0; }
+.retour.ok { color: var(--today); }
+.retour.ko { color: #d33; }
+.retour.presque { color: #c88a00; }
+.carte-vocab.fin ul { text-align: left; display: inline-block; }
+.liste-vocab { border-collapse: collapse; width: 100%; margin-top: 12px; }
+.liste-vocab th, .liste-vocab td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; }
+.liste-vocab th { background: var(--soft); }
+.liste-vocab[data-cache="de"] .c-de:not(.vu), .liste-vocab[data-cache="fr"] .c-fr:not(.vu) { color: transparent; background: var(--soft); cursor: pointer; }
+.liste-vocab[data-cache="de"] .c-de:not(.vu) *, .liste-vocab[data-cache="fr"] .c-fr:not(.vu) * { color: transparent; }
+.tablewrap { overflow-x: auto; }

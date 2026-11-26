@@ -36,6 +36,7 @@ window.REVISIONS = [
     dateTest: "2026-11-27",
     description: "Test de vocabulaire : les médias et ce qu'on fait avec le natel (p. 12-13).",
     fichiers: [
+      { nom: "Exercices de vocabulaire", chemin: "revisions/snu/2026-11-27-allemand-wir-und-die-medien/exercices.html" },
       { nom: "Voc p. 12", chemin: "revisions/snu/2026-11-27-allemand-wir-und-die-medien/voc-p12.jpg" },
       { nom: "Voc p. 13", chemin: "revisions/snu/2026-11-27-allemand-wir-und-die-medien/voc-p13.jpg" }
     ]
